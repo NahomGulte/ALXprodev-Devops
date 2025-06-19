@@ -1,0 +1,7 @@
+#!/bin/bash
+
+jq -c '.results[]' data.json | while read -r item; do
+    name=$(echo "$item" | jq -r '.name')
+    url=$(echo "$item" | jq -r '.url')
+    curl -s -X GET "$url" -o "$name".json
+done
