@@ -1,6 +1,6 @@
 #!/bin/bash
 
 jq -r '.results[] | "\(.name),\(.type),\(.height),\(.weight)"' data.json |
-awk -F',' '{ printf "%02d. %-15s -> %s\n", NR, $1, $2 }' |
+awk -F',' '{ printf "$name is of type $type, weighs ${formatted_weight}kg, and is ${formatted_height}m tall.", NR, $1, $2 }' |
 sed -e 's/pokemon/POKÉMON/g' -e 's/\/$//'
 
