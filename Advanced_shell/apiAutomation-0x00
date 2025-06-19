@@ -4,7 +4,7 @@ HTTP_STATUS=$(curl -s -w "%{http_code}" -o "data.json" "https://pokeapi.co/api/v
 
 # Check if the status code is 200 (OK)
 if [ "$HTTP_STATUS" -ne 200 ]; then
-  $HTTP_STATUS" >> error.txt
+  $HTTP_STATUS" >> errors.txt
   exit 1
 else
   curl -s -X GET "https://pokeapi.co/api/v2/pokemon/" -o data.json
