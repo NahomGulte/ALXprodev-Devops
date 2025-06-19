@@ -1,0 +1,12 @@
+#!/bin/bash
+
+HTTP_STATUS=$(curl -s -w "%{http_code}" -o "data.json" "https://pokeapi.co/api/v2/pokemon/")
+
+# Check if the status code is 200 (OK)
+if [ "$HTTP_STATUS" -ne 200 ]; then
+  echo "Error: API request failed with status $HTTP_STATUS" >> error.txt
+  echo "API request failed. Check $ERROR_LOG for details."
+  exit 1
+else
+  curl -s -X GET "https://pokeapi.co/api/v2/pokemon/" -o data.json
+fi
