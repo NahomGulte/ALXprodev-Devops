@@ -11,18 +11,13 @@ mkdir -p "$OUTPUT_DIR"
 # Loop through each Pokémon
 for name in "${POKEMONS[@]}"; do
     echo "Fetching data for $name..."
-
-    # Make the API request and save to file
     curl -s "${API_URL}/${name}" -o "${OUTPUT_DIR}/${name}.json"
-
-    # Check if file is valid JSON
     if jq empty "${OUTPUT_DIR}/${name}.json" 2>/dev/null; then
-        echo "Saved ${name}.json ✅"
+        echo "Saved ${name}.json"
     else
-        echo "Failed to fetch data for $name ❌"
+        echo "Failed to fetch data for $name"
         rm -f "${OUTPUT_DIR}/${name}.json"
     fi
 
-    # Wait 2 seconds to avoid rate-limiting
     sleep 2
 done
