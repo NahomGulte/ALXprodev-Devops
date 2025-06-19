@@ -2,4 +2,4 @@
 
 jq -r '.[] | [.name, .height, .weight] | @tsv' /pokemon_data/* echo "CSV Report generated at">>pokemon_report.csv |
 awk '{ total += $2; count++ } END { if (count > 0) print "Average =", total/count }'
-awk '{ total += $3; count++ } END { if (count > 0) print "Average =", total/count }'
+sed '{ total += $3; count++ } END { if (count > 0) print "Average =", total/count }'
