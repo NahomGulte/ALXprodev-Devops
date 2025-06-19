@@ -1,3 +1,6 @@
 #!/bin/bash
 
-awk -F': ' '{ print $1 " = " $2 }' self.json
+jq -r '.results[] | "\(.name),\(.type),\(.height),\(.weight)"' data.json |
+awk -F',' '{ printf "%02d. %-15s -> %s\n", NR, $1, $2 }' |
+sed -e 's/pokemon/POKÉMON/g' -e 's/\/$//'
+
