@@ -26,7 +26,25 @@ for name in "${POKEMONS[@]}"; do
 
   PIDS+=($!) 
 done
+jobs
+
+# Optional: kill jobs that take too long (e.g., over 10 seconds)
+TIMEOUT=10
+START=$(date +%s)
 
 for pid in "${PIDS[@]}"; do
-  wait "$pid"
+  while kill -0 "$pid" 2>/dev/null; do
+    now=$(date +%s)
+    elapsed=$((now - START))
+
+    if [ $elapsed -gt $TIMEOUT ]; then
+      kill -9 "$pid"
+      break
+    fi
+
+    sleep 1
+  done
+
+  wait "$pid" 2>/dev/null
 done
+
