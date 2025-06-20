@@ -1,0 +1,32 @@
+#!/bin/bash
+
+POKEMONS=("bulbasaur" "ivysaur" "venusaur" "charmander" "charmeleon")
+
+API_URL="https://pokeapi.co/api/v2/pokemon"
+PIDS=()
+
+OUTPUT_DIR="pokemon_data"
+mkdir -p "$OUTPUT_DIR"
+# Loop through each Pokémon
+for name in "${POKEMONS[@]}"; do
+    echo "Fetching data for $name..."
+    HTTP_STATUS=$(curl -s -w "%{API_URL/${name}}")
+
+    if [ "$HTTP_STATUS" -eq 200 ];
+    then
+
+    curl -s "${API_URL}/${name}" -o "${OUTPUT_DIR}/${name}.json"
+    if jq empty "${OUTPUT_DIR}/${name}.json" 2>/dev/null; then
+        echo "Saved ${name}.json"
+    else
+        echo "Failed to fetch data for $name"
+	ATTEMPT=$((ATTEMPT + 1))
+        rm -f "${OUTPUT_DIR}/${name}.json"
+    fi
+
+  PIDS+=($!) 
+done
+
+for pid in "${PIDS[@]}"; do
+  wait "$pid"
+done
